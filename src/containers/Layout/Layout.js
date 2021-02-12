@@ -1,10 +1,11 @@
 import React from "react";
+import styles from './Layout.module.css'
 
 const Layout = (props) => {
   return (
     <>
       <div>Toolbar, SideDrawer, Backdrop</div>
-      <main>{props.children}</main>
+      <main className={styles.Content}>{props.children}</main>
     </>
   );
 };
