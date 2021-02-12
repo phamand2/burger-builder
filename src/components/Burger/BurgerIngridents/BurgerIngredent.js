@@ -1,6 +1,6 @@
 import React from "react";
-import classes from "./BurgerIngredient.module.css";
 import styles from "./BurgerIngredient.module.css";
+import PropTypes from 'prop-types'
 
 const BurgerIngredient = (props) => {
   let ingredient = null;
@@ -17,16 +17,16 @@ const BurgerIngredient = (props) => {
         </div>;
       break;
     case "meat":
-      ingredient = <div className={classes.Meat}></div>;
+      ingredient = <div className={styles.Meat}></div>;
       break;
     case "cheese":
-      ingredient = <div className={classes.Cheese}></div>;
+      ingredient = <div className={styles.Cheese}></div>;
       break;
     case "bacon":
-      ingredient = <div className={classes.Bacon}></div>;
+      ingredient = <div className={styles.Bacon}></div>;
       break;
     case "salad":
-      ingredient = <div className={classes.Salad}></div>;
+      ingredient = <div className={styles.Salad}></div>;
       break;
     default:
       ingredient = null;
@@ -34,5 +34,9 @@ const BurgerIngredient = (props) => {
 
   return ingredient;
 };
+
+BurgerIngredient.propTypes = {
+  type: PropTypes.string.isRequired,
+}
 
 export default BurgerIngredient;
