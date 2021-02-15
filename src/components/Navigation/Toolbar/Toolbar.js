@@ -1,14 +1,14 @@
 import React from 'react'
 import Logo from '../../Logo/Logo'
 import NavigationItems from '../NavigationItems/NavigationItems'
+import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 import styles from './Toolbar.module.css'
 
 const Toolbar = (props) => {
 
-
   return (
     <header className={styles.Toolbar}>
-      <div>MENU</div>
+      <DrawerToggle clicked={props.drawerToggleClicked} />
       <div className={styles.Logo}>
         <Logo />
       </div>
@@ -19,4 +19,4 @@ const Toolbar = (props) => {
   )
 }
 
-export default <Toolbar></Toolbar>
+export default Toolbar
