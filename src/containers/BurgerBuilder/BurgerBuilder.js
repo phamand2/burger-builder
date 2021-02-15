@@ -24,16 +24,16 @@ class BurgerBuilder extends Component {
     purchasing: false,
   };
 
-  updatePurchaseState (ingredients) {
+  updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
-    .map(igKey => {
-      return ingredients[igKey]
-    })
-    .reduce((sum, el) => {
-      return sum + el
-    },0)
+      .map((igKey) => {
+        return ingredients[igKey];
+      })
+      .reduce((sum, el) => {
+        return sum + el;
+      }, 0);
 
-    this.setState({purchaseable: sum > 0})
+    this.setState({ purchaseable: sum > 0 });
   }
 
   addIngredientHandler = (type) => {
@@ -51,7 +51,7 @@ class BurgerBuilder extends Component {
       totalPrice: newPrice,
       ingredients: updatedIngredients,
     });
-    this.updatePurchaseState(updatedIngredients)
+    this.updatePurchaseState(updatedIngredients);
   };
 
   removeIngredientHandler = (type) => {
@@ -74,12 +74,16 @@ class BurgerBuilder extends Component {
       totalPrice: newPrice,
       ingredients: updatedIngredients,
     });
-    this.updatePurchaseState(updatedIngredients)
+    this.updatePurchaseState(updatedIngredients);
   };
 
   purchaseHandler = () => {
-    this.setState({purchasing: true})
-  }
+    this.setState({ purchasing: true });
+  };
+
+  purchaseCancelHandler = () => {
+    this.setState({ purchasing: false });
+  };
 
   render() {
     const disabledInfo = {
@@ -94,7 +98,12 @@ class BurgerBuilder extends Component {
 
     return (
       <>
-        <Modal show={this.state.purchasing}><OrderSummary ingredients={this.state.ingredients}/></Modal>
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={this.purchaseCancelHandler}
+        >
+          <OrderSummary ingredients={this.state.ingredients} />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ordered={this.purchaseHandler}
