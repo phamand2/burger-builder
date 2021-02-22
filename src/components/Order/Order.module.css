@@ -6,3 +6,16 @@
   margin: 10px auto;
   box-sizing: border-box
 }
+
+.Ingredients {
+  text-transform: capitalize;
+  display: flex;
+  justify-content: center;
+  margin: 0 8px;
+  bordeR: 1px solid #ccc;
+  padding: 5px;
+}
+
+
+
+/* {textTransform: 'capitalize', display: 'flex', justifyContent: 'center', margin: '0 8px', border: '1px solid #ccc', padding: '5px'}} */
