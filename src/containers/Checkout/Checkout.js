@@ -1,51 +1,38 @@
-import React, { Component } from "react";
+import React from "react";
 import CheckoutSummary from "../../components/Order/CheckoutSummary";
-import { Route } from 'react-router-dom'
+import { Route, useHistory, useLocation } from 'react-router-dom'
 import ContactData from "./ContactData/ContactData";
+import { useSelector } from "react-redux";
 
-class Checkout extends Component {
-  state = {
-    ingredients: null,
-    totalPrice: 0
+const Checkout = () => {
 
+  const ingredients = useSelector(state => state.ingredient.ingredients)
+
+
+  const history = useHistory()
+  const location = useLocation()
+
+  
+  const checkoutCancelledHandler = () => {
+    history.goBack();
   };
 
-  componentWillMount() {
-    const query = new URLSearchParams(this.props.location.search);
-    const ingredients = {};
-    let price = 0;
-    for (let param of query.entries()) {
-      // ['salad', '1']
-      if(param[0] === 'price'){
-        price = param[1]
-      } else {
-        ingredients[param[0]] = +param[1];
-      }
-    }
-    this.setState({ ingredients: ingredients,
-    totalPrice: price });
-  }
-
-  checkoutCancelledHandler = () => {
-    this.props.history.goBack();
+  const checkoutContinuedHandler = () => {
+    history.replace("/checkout/contact-data");
   };
 
-  checkoutContinuedHandler = () => {
-    this.props.history.replace("/checkout/contact-data");
-  };
 
-  render() {
     return (
       <div>
         <CheckoutSummary
-          ingredients={this.state.ingredients}
-          checkoutCancelled={this.checkoutCancelledHandler}
-          checkoutContinued={this.checkoutContinuedHandler}
+          ingredients={ingredients}
+          checkoutCancelled={checkoutCancelledHandler}
+          checkoutContinued={checkoutContinuedHandler}
         />
-        <Route path={this.props.match.path + '/contact-data'} render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.totalPrice} {...props} />)} />
+        <Route pathname={location + '/contact-data'} component={ContactData} />
       </div>
     );
-  }
+
 }
 
 export default Checkout;

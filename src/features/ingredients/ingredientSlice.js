@@ -13,18 +13,28 @@ export const ingredientSlice = createSlice({
   },
   reducers: {
     ADD_INGREDIENT: (state, action) => {
-      return {...state, 
-              ingredients: {
-                ...state.ingredients,
-                [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-              }
-      }
-    },
+  
+      state.ingredients[action.payload.ingredientName] = state.ingredients[action.payload.ingredientName] + 1
+  
+      state.totalPrice = state.totalPrice + INGREDIENT_PRICES[action.payload.ingredientName]
+    
+      },
+
     REMOVE_INGREDIENT: (state, action) => {
-      state.ingredients[action.ingredientName] -= 1;
-    },
+      state.ingredients[action.payload.ingredientName] = state.ingredients[action.payload.ingredientName] - 1
+  
+      state.totalPrice = state.totalPrice - INGREDIENT_PRICES[action.payload.ingredientName]
   },
+
+}
 });
+
+const INGREDIENT_PRICES = {
+  salad: 0.5,
+  cheese: 0.4,
+  meat: 1.3,
+  bacon: 0.7,
+};
 
 // Action creators are generated for each case reducer function
 export const { ADD_INGREDIENT, REMOVE_INGREDIENT } = ingredientSlice.actions;
