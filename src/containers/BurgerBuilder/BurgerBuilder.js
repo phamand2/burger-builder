@@ -3,12 +3,13 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Burger from "../../components/Burger/Burger";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Modal from "../../components/UI/Modal/Modal";
-import axios from "../../axios-order";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_INGREDIENT, REMOVE_INGREDIENT } from "../../features/ingredients/ingredientSlice";
 import { useHistory } from "react-router-dom";
+import { initIngredients } from "../../features/ingredients/ingredientSlice";
+import axios from "../../axios-order";
 
 
 
@@ -16,31 +17,21 @@ const BurgerBuilder = () => {
 
 
   const [purchasing, setPurchasing] = useState(false);
-  const [loading, setloading] = useState(false);
-  const [error, setError] = useState(false)
+
 
   const history = useHistory()
 
 
   const ingredients = useSelector(state => state.ingredient.ingredients)
   const totalPrice = useSelector(state => state.ingredient.totalPrice)
+  const error = useSelector(state => state.ingredient.error)
 
   const dispatch = useDispatch()
 
 
-
-  // componentDidMount() {
-  //   // axios
-  //   //   .get(
-  //   //     "https://react-my-burger-d1511-default-rtdb.firebaseio.com/ingredients.json"
-  //   //   )
-  //   //   .then((res) => {
-  //   //     this.setState({
-  //   //       ingredients: res.data,
-  //   //     });
-  //   //   })
-  //   //   .catch(error =>{this.setState({error: true})})
-  // }
+  useEffect(() => {
+    dispatch(initIngredients())
+  }, [dispatch])
 
   const updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
@@ -124,9 +115,6 @@ const BurgerBuilder = () => {
     }
 
 
-    if (loading) {
-      orderSummary = <Spinner />;
-    }
 
 
     return (

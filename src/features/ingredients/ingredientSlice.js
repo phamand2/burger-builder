@@ -1,15 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "../../axios-order";
 
 export const ingredientSlice = createSlice({
   name: "ingredient",
   initialState: {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0
-    },
+    ingredients: null,
     totalPrice: 4,
+    error: false
   },
   reducers: {
     ADD_INGREDIENT: (state, action) => {
@@ -26,6 +23,15 @@ export const ingredientSlice = createSlice({
       state.totalPrice = state.totalPrice - INGREDIENT_PRICES[action.payload.ingredientName]
   },
 
+    SET_INGREDIENT: (state, action) => {
+      state.ingredients = action.payload
+      state.error = false
+    },
+
+    FETCH_INGREDIENT_FAILED: (state, action) => {
+        state.error = true
+    }
+
 }
 });
 
@@ -37,6 +43,16 @@ const INGREDIENT_PRICES = {
 };
 
 // Action creators are generated for each case reducer function
-export const { ADD_INGREDIENT, REMOVE_INGREDIENT } = ingredientSlice.actions;
+export const { ADD_INGREDIENT, REMOVE_INGREDIENT, SET_INGREDIENT, FETCH_INGREDIENT_FAILED } = ingredientSlice.actions;
+
+
+export const initIngredients = () => async (dispatch) => {
+  try {
+    const {data} = await axios.get("https://react-my-burger-d1511-default-rtdb.firebaseio.com/ingredients.json")
+    dispatch(SET_INGREDIENT(data))
+  } catch (error) {
+    dispatch(FETCH_INGREDIENT_FAILED())
+  }
+}
 
 export default ingredientSlice.reducer;
