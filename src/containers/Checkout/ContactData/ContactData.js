@@ -4,8 +4,16 @@ import styles from "./ContactData.module.css";
 import axios from "../../../axios-order";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
+import { useDispatch, useSelector } from "react-redux";
+import { purchaseBurgerStart, SET_LOADING } from "../../../features/orders/orderSlice";
+import { Redirect, useHistory } from "react-router";
 
 const ContactData = (props) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+
+
   const [orderForm, setOrderForm] = useState({
     name: {
       elementType: "input",
@@ -89,13 +97,14 @@ const ContactData = (props) => {
   })
 
   const [formIsValid, setFormIsValid] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-
+  // const [loading, setLoading] = useState(false)
+  const loading = useSelector(state => state.order.loading)
+  const ingredients = useSelector(state => state.ingredient.ingredients)
+  const price = useSelector(state => state.ingredient.totalPrice)
+  console.log(price)
 
   const orderHandler = (e) => {
     e.preventDefault();
-    setLoading(true)
     const formData = {};
     for (let formElementIdentifier in orderForm) {
       formData[formElementIdentifier] = orderForm[
@@ -104,18 +113,13 @@ const ContactData = (props) => {
     }
 
     const order = {
-      ingredients: props.ingredients,
-      price: props.price,
-      order: formData,
+      ingredients: ingredients,
+      price: price,
+      orderData: formData,
     };
 
-    axios
-      .post("/orders.json", order)
-      .then((res) => {
-        setLoading(false)
-        props.history.push("/");
-      })
-      .catch((error) => setLoading(false));
+    dispatch(purchaseBurgerStart(order))
+    
   };
 
   const checkValidity = (value, rules) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import CheckoutSummary from "../../components/Order/CheckoutSummary";
-import { Route, useHistory, useLocation } from 'react-router-dom'
+import { Route, useHistory, useLocation, Redirect } from 'react-router-dom'
 import ContactData from "./ContactData/ContactData";
 import { useSelector } from "react-redux";
 
@@ -23,14 +23,20 @@ const Checkout = () => {
 
 
     return (
-      <div>
-        <CheckoutSummary
+      <>
+        {ingredients ?
+        <div>
+          <CheckoutSummary
           ingredients={ingredients}
           checkoutCancelled={checkoutCancelledHandler}
           checkoutContinued={checkoutContinuedHandler}
         />
         <Route pathname={location + '/contact-data'} component={ContactData} />
-      </div>
+        </div> : 
+        <Redirect to='/' />
+        } 
+        
+      </>
     );
 
 }
